@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: sam-kanban
+Transform:
+- AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Timeout: 3
+    Handler: app.handler
+    Runtime: nodejs12.x
+Resources:
+  DynamoDB:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      TableName: Cards
+  APIGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: Kanban API Gateway
+      StageName: prod
+  GetCardsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetCards
+      CodeUri: GetCardsFunction
+      Role: arn:aws:iam::702313069121:role/Lambda_Kanban_Role
+      Events:
+        Trigger:
+          Type: Api
+          Properties:
+            Path: /kanban/cards
+            Method: GET
+            Auth:
+              ApiKeyRequired: true
+            RestApiId:
+              Ref: APIGateway
+    Metadata:
+      SamResourceId: GetCardsFunction
+Outputs:
+  APIGateway:
+    Description: API Gateway endpoint URL for Prod stage for kanban project
+    Value:
+      Fn::Sub: https://${APIGateway}.execute-api.${AWS::Region}.amazonaws.com/prod
