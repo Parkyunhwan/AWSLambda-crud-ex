@@ -35,6 +35,7 @@ Resources:
     Properties:
       Name: Kanban API Gateway
       StageName: prod
+
   GetCardsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -47,6 +48,54 @@ Resources:
           Properties:
             Path: /kanban/cards
             Method: GET
+            Auth:
+              ApiKeyRequired: true
+            RestApiId: !Ref APIGateway
+
+  PostCardsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PostCards
+      CodeUri: lambda/postcard
+      Role: arn:aws:iam::702313069121:role/Lambda_Kanban_Role
+      Events:
+        Trigger:
+          Type: Api
+          Properties:
+            Path: /kanban/cards
+            Method: post
+            Auth:
+              ApiKeyRequired: true
+            RestApiId: !Ref APIGateway
+
+  PutCardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PutCards
+      CodeUri: lambda/putcard
+      Role: arn:aws:iam::702313069121:role/Lambda_Kanban_Role
+      Events:
+        Trigger:
+          Type: Api
+          Properties:
+            Path: /kanban/cards/{id}
+            Method: put
+            Auth:
+              ApiKeyRequired: true
+            RestApiId: !Ref APIGateway
+
+  DeleteCardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: DeleteCard
+      CodeUri: lambda/deletecard
+      Role: arn:aws:iam::702313069121:role/Lambda_Kanban_Role
+      Events:
+        Trigger:
+          Type: Api
+          Properties:
+            Path: /kanban/cards/{id}
+            Method: delete
             Auth:
               ApiKeyRequired: true
             RestApiId: !Ref APIGateway
