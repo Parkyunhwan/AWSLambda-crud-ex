@@ -5,10 +5,10 @@ lambda-crud-example
 ## Run
 
 ### build
-$> sam build
+`$> sam build`
 
 ### dynamodb docker run
-$> docker-compose up
+`$> docker-compose up`
 
 ### local start
-$> sam local start-api
+`$> sam local start-api`
