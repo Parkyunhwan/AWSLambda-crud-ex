@@ -1,6 +1,7 @@
 var AWS = require("aws-sdk");
 var documentClient = new AWS.DynamoDB.DocumentClient({
   apiVersion: "2012-08-10",
+  endpoint: "http://docker.for.mac.localhost:8000",
 });
 const tableName = "Cards";
 

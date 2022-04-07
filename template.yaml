@@ -14,9 +14,10 @@ Transform:
 
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 10
     Handler: app.handler
     Runtime: nodejs12.x
+
     #Layers:
 
 # Resources declares the AWS resources that you want to include in the stack
